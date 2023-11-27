@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout SCM'){
             steps{
                 script{
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/gauri17-pro/terraform-jenkins-eks.git']])
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Sajiyah-Salat/terraform-jenkins-eks']])
                 }
             }
         }
@@ -64,8 +64,9 @@ pipeline {
                 script{
                     dir('EKS/ConfigurationFiles') {
                         sh 'aws eks update-kubeconfig --name my-eks-cluster'
-                        sh 'kubectl apply -f deployment.yaml'
-                        sh 'kubectl apply -f service.yaml'
+                        sh 'kubectl apply -f application.yaml'
+                        sh 'sleep 5m'
+                        sh 'kubectl port-forward svc/argocd-server -n argocd 8080:443'
                     }
                 }
             }
